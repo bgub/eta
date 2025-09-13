@@ -8,7 +8,7 @@ export default defineConfig([
     sourcemap: true,
   },
   {
-    entry: ["./src/browser.ts"],
+    entry: ["./src/core.ts"],
     platform: "browser",
     dts: true,
     minify: true,

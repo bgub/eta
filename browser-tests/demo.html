@@ -168,7 +168,7 @@ Value: <%= it.obj[key] %>, Key: <%= key %>
 <% if (key === 'thirdchild') { %>
   <% for (var i = 0, arr = it.obj[key]; i < arr.length; i++) { %>
       Salutations! Index: <%= i %>, parent key: <%= key %>
-      
+
   <% } %>
 <% } %>
 <% } %>
@@ -200,7 +200,7 @@ Partial: <%~ include("mypartial") %>
       </div>
     </div>
     <script type="module">
-      import { Eta } from "../dist/browser.module.mjs";
+      import { Eta } from "../dist/core.js";
 
       // TODO: add fallback using unpkg
 

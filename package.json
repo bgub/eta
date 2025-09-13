@@ -19,13 +19,13 @@
       "import": "./dist/index.js",
       "types": "./index.d.ts"
     },
-    "./browser": {
-      "import": "./dist/browser.js",
-      "types": "./dist/browser.d.ts"
+    "./core": {
+      "import": "./dist/core.js",
+      "types": "./dist/core.d.ts"
     }
   },
   "types": "./dist/index.d.ts",
-  "browser": "./dist/browser.js",
+  "browser": "./dist/core.js",
   "sideEffects": false,
   "files": [
     "dist"
@@ -50,7 +50,7 @@
   },
   "size-limit": [
     {
-      "path": "dist/browser.js",
+      "path": "dist/core.js",
       "limit": "3.5 KB"
     }
   ],
