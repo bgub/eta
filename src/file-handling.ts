@@ -2,8 +2,8 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 
 import type { Options } from "./config.ts";
-import type { Eta as EtaCore } from "./internal.ts";
 import { EtaFileResolutionError } from "./err.ts";
+import type { Eta as EtaCore } from "./internal.ts";
 
 export function readFile(this: EtaCore, path: string): string {
   let res = "";

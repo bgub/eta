@@ -1,5 +1,5 @@
-import { Eta as EtaCore } from "./internal.ts";
 import { readFile, resolvePath } from "./file-handling.ts";
+import { Eta as EtaCore } from "./internal.ts";
 
 export type { EtaConfig, Options } from "./config.ts";
 export {

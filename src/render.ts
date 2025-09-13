@@ -2,8 +2,8 @@ import type { TemplateFunction } from "./compile.ts";
 
 /* TYPES */
 import type { Options } from "./config.ts";
-import type { Eta } from "./internal.ts";
 import { EtaNameResolutionError } from "./err.ts";
+import type { Eta } from "./internal.ts";
 
 /* END TYPES */
 

@@ -1,5 +1,5 @@
-import type { Eta } from "./internal.ts";
 import { ParseErr } from "./err.ts";
+import type { Eta } from "./internal.ts";
 import { trimWS } from "./utils.ts";
 
 export type TagType = "r" | "e" | "i" | "";
