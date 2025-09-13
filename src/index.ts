@@ -1,4 +1,4 @@
-import { Eta as EtaCore } from "./core.ts";
+import { Eta as EtaCore } from "./internal.ts";
 import { readFile, resolvePath } from "./file-handling.ts";
 
 export type { EtaConfig, Options } from "./config.ts";

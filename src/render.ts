@@ -2,7 +2,7 @@ import type { TemplateFunction } from "./compile.ts";
 
 /* TYPES */
 import type { Options } from "./config.ts";
-import type { Eta } from "./core.ts";
+import type { Eta } from "./internal.ts";
 import { EtaNameResolutionError } from "./err.ts";
 
 /* END TYPES */

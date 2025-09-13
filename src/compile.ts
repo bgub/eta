@@ -1,5 +1,5 @@
 import type { EtaConfig, Options } from "./config.ts";
-import type { Eta } from "./core.ts";
+import type { Eta } from "./internal.ts";
 import { EtaParseError } from "./err.ts";
 
 export type TemplateFunction = (

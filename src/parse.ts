@@ -1,4 +1,4 @@
-import type { Eta } from "./core.ts";
+import type { Eta } from "./internal.ts";
 import { ParseErr } from "./err.ts";
 import { trimWS } from "./utils.ts";
 

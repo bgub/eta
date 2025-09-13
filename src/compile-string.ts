@@ -1,5 +1,5 @@
 import type { Options } from "./config.ts";
-import type { Eta } from "./core.ts";
+import type { Eta } from "./internal.ts";
 import type { AstObject } from "./parse.ts";
 
 /**
