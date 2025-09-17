@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.0](https://github.com/bgub/eta/compare/eta-v4.0.0-beta.1...eta-v4.0.0) (2025-09-17)
+
+
+### Bug Fixes
+
+* combine release-please and publish workflows ([02f033a](https://github.com/bgub/eta/commit/02f033a2db05f98b246e254288a21ca2b2e14fd8))
+
+
+### Miscellaneous Chores
+
+* remove mention of beta in README ([fb9e779](https://github.com/bgub/eta/commit/fb9e7795f6ed81d4cdcec831518af0b503821137))
+
 ## [4.0.0-beta.1](https://github.com/bgub/eta/compare/eta-v4.0.0-alpha.2...eta-v4.0.0-beta.1) (2025-09-13)
 
 
