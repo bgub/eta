@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/bgub/eta/compare/eta-v4.0.0...eta-v4.0.1) (2025-09-17)
+
+
+### Bug Fixes
+
+* change deno.land link to jsr in README ([21b3afc](https://github.com/bgub/eta/commit/21b3afc82318d37e410ec49121c57feba7785445))
+
 ## [4.0.0](https://github.com/bgub/eta/compare/eta-v4.0.0-beta.1...eta-v4.0.0) (2025-09-17)
 
 
