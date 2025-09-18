@@ -22,6 +22,7 @@ export function compileToString(
   let res = `${config.functionHeader}
 let include = (template, data) => this.render(template, data, options);
 let includeAsync = (template, data) => this.renderAsync(template, data, options);
+let resolvePath = (template) => this.resolvePath(template, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction${
     config.debug
