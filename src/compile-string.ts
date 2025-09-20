@@ -38,6 +38,8 @@ function layout(path, data) {
     config.useWith ? "with(" + config.varName + "||{}){" : ""
   }
 
+function ${config.outputFunctionName}(s){__eta.res+=s;}
+
 ${compileBody.call(this, buffer)}
 if (__eta.layout) {
   __eta.res = ${

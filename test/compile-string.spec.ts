@@ -24,6 +24,8 @@ function layout(path, data) {
   __eta.layoutData = data;
 }
 
+function output(s){__eta.res+=s;}
+
 __eta.res+='hi '
 __eta.res+=__eta.e(it.name)
 
@@ -47,6 +49,8 @@ function layout(path, data) {
   __eta.layout = path;
   __eta.layoutData = data;
 }
+
+function output(s){__eta.res+=s;}
 
 __eta.res+='hi '
 __eta.res+=it.name
@@ -74,6 +78,8 @@ function layout(path, data) {
   __eta.layoutData = data;
 }
 
+function output(s){__eta.res+=s;}
+
 __eta.res+='hi'
 __eta.res+=__eta.e(it.firstname)
 __eta.res+=__eta.e(it.lastname)
@@ -98,6 +104,8 @@ function layout(path, data) {
   __eta.layout = path;
   __eta.layoutData = data;
 }
+
+function output(s){__eta.res+=s;}
 
 __eta.res+='Hi\\n'
 console.log("Hope you like Eta!")

@@ -36,6 +36,9 @@ export interface EtaConfig {
   /** Function applied to all interpolations when autoFilter is true */
   filterFunction: (val: unknown) => string;
 
+  /** Name of the function that can be used in template code to output text to the result (like EJS's `outputFunctionName`). */
+  outputFunctionName: string;
+
   /** Raw JS code inserted in the template function. Useful for declaring global variables for user templates */
   functionHeader: string;
 
@@ -90,6 +93,7 @@ const defaultConfig: EtaConfig = {
   escapeFunction: XMLEscape,
   // default filter function (not used unless enables) just stringifies the input
   filterFunction: (val) => String(val),
+  outputFunctionName: 'output',
   functionHeader: "",
   parse: {
     exec: "",
