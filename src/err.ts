@@ -87,6 +87,7 @@ export function RuntimeErr(
   );
 
   err.name = originalError.name; // the original name (e.g. ReferenceError) may be useful
+  err.cause = originalError;
 
   throw err;
 }
