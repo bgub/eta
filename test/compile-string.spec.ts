@@ -24,6 +24,10 @@ function layout(path, data) {
   __eta.layoutData = data;
 }
 
+function output(s) {
+    __eta.res += s;
+}
+
 __eta.res+='hi '
 __eta.res+=__eta.e(it.name)
 
@@ -46,6 +50,10 @@ let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFuncti
 function layout(path, data) {
   __eta.layout = path;
   __eta.layoutData = data;
+}
+
+function output(s) {
+    __eta.res += s;
 }
 
 __eta.res+='hi '
@@ -74,6 +82,10 @@ function layout(path, data) {
   __eta.layoutData = data;
 }
 
+function output(s) {
+    __eta.res += s;
+}
+
 __eta.res+='hi'
 __eta.res+=__eta.e(it.firstname)
 __eta.res+=__eta.e(it.lastname)
@@ -97,6 +109,10 @@ let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFuncti
 function layout(path, data) {
   __eta.layout = path;
   __eta.layoutData = data;
+}
+
+function output(s) {
+    __eta.res += s;
 }
 
 __eta.res+='Hi\\n'
