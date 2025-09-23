@@ -28,10 +28,11 @@ export function resolvePath(
   options?: Partial<Options>,
 ): string {
   let resolvedFilePath = "";
+  let isInViewDirectory = false;
 
-  const views = this.config.views;
+  const views = Array.isArray(this.config.views) ? this.config.views : !this.config.views ? [] : [this.config.views];
 
-  if (!views) {
+  if (!views || views.length === 0) {
     throw new EtaFileResolutionError("Views directory is not defined");
   }
 
@@ -41,52 +42,87 @@ export function resolvePath(
       ? ".eta"
       : this.config.defaultExtension;
 
-  // how we index cached template paths
-  const cacheIndex = JSON.stringify({
-    filename: baseFilePath, // filename of the template which called includeFile()
-    path: templatePath,
-    views: this.config.views,
-  });
+  let resolvedPath: string | null = null;
 
-  templatePath += path.extname(templatePath) ? "" : defaultExtension;
+  for (const [index, view] of views.entries()) {
+    // how we index cached template paths
+    const cacheIndex = JSON.stringify({
+      filename: baseFilePath, // filename of the template which called includeFile()
+      path: templatePath,
+      views: view,
+    });
 
-  // if the file was included from another template
-  if (baseFilePath) {
-    // check the cache
+    templatePath += path.extname(templatePath) ? "" : defaultExtension;
 
-    if (this.config.cacheFilepaths && this.filepathCache[cacheIndex]) {
-      return this.filepathCache[cacheIndex];
-    }
+    // if the file was included from another template
+    if (baseFilePath) {
+      // check the cache
 
-    const absolutePathTest = absolutePathRegExp.exec(templatePath);
+      if (this.config.cacheFilepaths && this.filepathCache[cacheIndex]) {
+        resolvedPath = this.filepathCache[cacheIndex];
+        break;
+      }
 
-    if (absolutePathTest?.length) {
-      const formattedPath = templatePath.replace(/^\/*|^\\*/, "");
-      resolvedFilePath = path.join(views, formattedPath);
+      const absolutePathTest = absolutePathRegExp.exec(templatePath);
+
+      if (absolutePathTest?.length) {
+        const formattedPath = templatePath.replace(/^\/*|^\\*/, "");
+        resolvedFilePath = path.join(view, formattedPath);
+      } else {
+        // resolve relative path and remap to current views dir
+        const containingBase = views.find((view) => {
+          return baseFilePath.startsWith(view);
+        });
+        const baseFileFolderPath = path.dirname(baseFilePath);
+        resolvedFilePath = path.join(view, path.join(baseFileFolderPath, templatePath).replace(containingBase ?? "", ""));
+      }
     } else {
-      resolvedFilePath = path.join(path.dirname(baseFilePath), templatePath);
+      resolvedFilePath = path.join(view, templatePath);
+
+      // check for dynamicly loaded templates
+      const templates = options?.async
+        ? this.templatesAsync
+        : this.templatesSync;
+        
+      if(templates.get(resolvedFilePath)) {
+        resolvedPath = resolvedFilePath;
+        isInViewDirectory = true;
+        break;
+      }
     }
-  } else {
-    resolvedFilePath = path.join(views, templatePath);
+
+    isInViewDirectory = dirIsChild(view, resolvedFilePath);
+    resolvedPath = resolvedFilePath;
+
+    if (isInViewDirectory && fileExists(resolvedFilePath)) {
+      // add resolved path to the cache
+      if (baseFilePath && this.config.cacheFilepaths) {
+        this.filepathCache[cacheIndex] = resolvedFilePath;
+      }
+      break;
+    }
   }
-
-  if (dirIsChild(views, resolvedFilePath)) {
-    // add resolved path to the cache
-    if (baseFilePath && this.config.cacheFilepaths) {
-      this.filepathCache[cacheIndex] = resolvedFilePath;
-    }
-
-    return resolvedFilePath;
-  } else {
+  
+  if(!isInViewDirectory) {
     throw new EtaFileResolutionError(
       `Template '${templatePath}' is not in the views directory`,
     );
   }
+  return resolvedPath!;
 }
 
-function dirIsChild(parent: string, dir: string) {
+function fileExists(path: string) {
+  try {
+    fs.accessSync(path, fs.constants.F_OK);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+function dirIsChild(parent: string, dir: string): boolean {
   const relative = path.relative(parent, dir);
-  return relative && !relative.startsWith("..") && !path.isAbsolute(relative);
+  return !!relative && !relative.startsWith("..") && !path.isAbsolute(relative);
 }
 
 const absolutePathRegExp = /^\\|^\//;

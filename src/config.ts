@@ -71,7 +71,7 @@ export interface EtaConfig {
   varName: string;
 
   /** Directory that contains templates */
-  views?: string;
+  views?: string | string[];
 
   /** Control template file extension defaults. Default `.eta` */
   defaultExtension?: string;
