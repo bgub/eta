@@ -46,7 +46,7 @@ describe("template overrides", () => {
       views: [viewsOverridesDir, viewsDir],
       cache: true,
     });
-    const templateResult = await eta.render("simple", {
+    const templateResult = eta.render("simple", {
       name: "Test",
     });
     expect(templateResult).toEqual(`Hi Test Override!`);
