@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { Eta } from "../src/index";
 
 const viewsDir = path.join(__dirname, "templates");
+const viewsOverridesDir = path.join(__dirname, "templatesOverrides");
 
 const eta = new Eta({ views: viewsDir, cache: true });
 
@@ -35,6 +36,29 @@ Hi Test Runner`,
       [pathToPartial]: `${viewsDir}/partial.eta`,
       [pathToSimple]: `${viewsDir}/simple.eta`,
     });
+  });
+});
+
+
+describe("template overrides", () => {
+  it("works with overrides", async () => {
+    const eta = new Eta({
+      views: [viewsOverridesDir, viewsDir],
+      cache: true,
+    });
+    const templateResult = await eta.render("simple", {
+      name: "Test",
+    });
+    expect(templateResult).toEqual(`Hi Test Override!`);
+  });
+  it("relative includes work with overrides", async () => {
+    const eta = new Eta({
+      views: [viewsOverridesDir, viewsDir],
+      cache: true,
+    });
+    const templateResult = eta.render("partial", {});
+
+    expect(templateResult).toEqual(`This is a partial override. Hi Test Runner`);
   });
 });
 
