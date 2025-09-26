@@ -17,15 +17,17 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "types": "./index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./core": {
       "import": "./dist/core.js",
-      "types": "./dist/core.d.ts"
-    }
+      "require": "./dist/core.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.ts",
-  "browser": "./dist/core.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
   "sideEffects": false,
   "files": [
     "dist"
