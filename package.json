@@ -33,6 +33,10 @@
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "browser": {
+    "./dist/index.js": "./dist/core.js",
+    "./dist/index.cjs": "./dist/core.cjs"
+  },
   "types": "./dist/index.d.cts",
   "files": [
     "dist"
