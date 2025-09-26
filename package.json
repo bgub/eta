@@ -46,12 +46,12 @@
     "test": "vitest run --coverage"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.3",
-    "@size-limit/preset-small-lib": "^8.2.4",
-    "@types/node": "^22.18.1",
+    "@biomejs/biome": "2.2.4",
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "@types/node": "^24.5.2",
     "@vitest/coverage-istanbul": "3.2.4",
-    "size-limit": "^8.2.4",
-    "tsdown": "^0.15.0",
+    "size-limit": "^11.2.0",
+    "tsdown": "^0.15.4",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
