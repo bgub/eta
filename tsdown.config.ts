@@ -1,17 +1,15 @@
 import { defineConfig } from "tsdown";
 
-export default defineConfig([
-  {
-    entry: ["./src/index.ts"],
-    platform: "node",
-    dts: true,
-    sourcemap: true,
+export default defineConfig({
+  entry: {
+    index: "./src/index.ts",
+    core: "./src/core.ts",
   },
-  {
-    entry: ["./src/core.ts"],
-    platform: "browser",
-    dts: true,
-    minify: true,
-    sourcemap: true,
-  },
-]);
+  dts: true,
+  format: ["esm", "cjs"],
+  external: ["node:fs", "node:path"],
+  platform: "neutral",
+  sourcemap: true,
+  minify: true,
+  exports: true,
+});
