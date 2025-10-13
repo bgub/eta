@@ -153,6 +153,15 @@ To render Eta templates in [Koa](https://koajs.com) web framework: [@cedx/koa-et
 
 </details>
 
+<details>
+  <summary>
+    <b>Vite</b>
+  </summary>
+
+To use Eta templates in your Vite project: [@rinoshiyo/vite-plugin-eta](https://github.com/rinoshiyo/vite-plugin-eta)
+
+</details>
+
 <br />
 
 ## Projects using `eta`
