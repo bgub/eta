@@ -13,38 +13,52 @@
     "typescript types"
   ],
   "homepage": "https://eta.js.org",
+  "bugs": "https://github.com/bgub/eta/issues",
+  "repository": "github:bgub/eta",
+  "funding": "https://github.com/bgub/eta?sponsor=1",
+  "license": "MIT",
+  "author": "Ben Gubler <nebrelbug@gmail.com>",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "types": "./index.d.ts"
+      "require": "./dist/index.cjs"
     },
     "./core": {
       "import": "./dist/core.js",
-      "types": "./dist/core.d.ts"
-    }
+      "require": "./dist/core.cjs"
+    },
+    "./package.json": "./package.json"
   },
-  "types": "./dist/index.d.ts",
-  "browser": "./dist/core.js",
-  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "browser": {
+    "./dist/index.js": "./dist/core.js",
+    "./dist/index.cjs": "./dist/core.cjs"
+  },
+  "types": "./dist/index.d.cts",
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "biome check --error-on-warnings",
     "format": "biome format --write",
-    "test": "vitest run --coverage",
-    "size": "size-limit"
+    "lint": "biome check --error-on-warnings",
+    "size": "size-limit",
+    "test": "vitest run --coverage"
   },
-  "author": "Ben Gubler <nebrelbug@gmail.com>",
-  "funding": "https://github.com/bgub/eta?sponsor=1",
-  "repository": "github:bgub/eta",
-  "bugs": {
-    "url": "https://github.com/bgub/eta/issues"
+  "devDependencies": {
+    "@biomejs/biome": "2.2.4",
+    "@size-limit/preset-small-lib": "^11.2.0",
+    "@types/node": "^24.5.2",
+    "@vitest/coverage-istanbul": "3.2.4",
+    "size-limit": "^11.2.0",
+    "tsdown": "^0.15.4",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   },
-  "license": "MIT",
   "engines": {
     "node": ">=20"
   },
@@ -53,15 +67,5 @@
       "path": "dist/core.js",
       "limit": "3.5 KB"
     }
-  ],
-  "devDependencies": {
-    "@biomejs/biome": "2.2.3",
-    "@size-limit/preset-small-lib": "^8.2.4",
-    "@types/node": "^22.18.1",
-    "@vitest/coverage-istanbul": "3.2.4",
-    "size-limit": "^8.2.4",
-    "tsdown": "^0.15.0",
-    "typescript": "^5.9.2",
-    "vitest": "^3.2.4"
-  }
+  ]
 }
