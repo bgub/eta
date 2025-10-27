@@ -14,8 +14,8 @@ describe("Compile to String test", () => {
   it("compiles a simple template", () => {
     const str = eta.compileToString("hi <%= it.name %>");
     expect(str).toEqual(`
-let include = (template, data) => this.render(template, {...it, ...(data ?? {})}, options);
-let includeAsync = (template, data) => this.renderAsync(template, {...it, ...(data ?? {})}, options);
+let include = (__eta_t, __eta_d) => this.render(__eta_t, {...it, ...(__eta_d ?? {})}, options);
+let includeAsync = (__eta_t, __eta_d) => this.renderAsync(__eta_t, {...it, ...(__eta_d ?? {})}, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction};
 
@@ -40,8 +40,8 @@ return __eta.res;
   it("compiles a simple template with a raw tag", () => {
     const str = eta.compileToString("hi <%~ it.name %>");
     expect(str).toEqual(`
-let include = (template, data) => this.render(template, {...it, ...(data ?? {})}, options);
-let includeAsync = (template, data) => this.renderAsync(template, {...it, ...(data ?? {})}, options);
+let include = (__eta_t, __eta_d) => this.render(__eta_t, {...it, ...(__eta_d ?? {})}, options);
+let includeAsync = (__eta_t, __eta_d) => this.renderAsync(__eta_t, {...it, ...(__eta_d ?? {})}, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction};
 
@@ -68,8 +68,8 @@ return __eta.res;
       "hi\n<%- = it.firstname-%>\n<%_ = it.lastname_%>",
     );
     expect(str).toEqual(`
-let include = (template, data) => this.render(template, {...it, ...(data ?? {})}, options);
-let includeAsync = (template, data) => this.renderAsync(template, {...it, ...(data ?? {})}, options);
+let include = (__eta_t, __eta_d) => this.render(__eta_t, {...it, ...(__eta_d ?? {})}, options);
+let includeAsync = (__eta_t, __eta_d) => this.renderAsync(__eta_t, {...it, ...(__eta_d ?? {})}, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction};
 
@@ -95,8 +95,8 @@ return __eta.res;
   it("compiles complex template", () => {
     const str = eta.compileToString(complexTemplate);
     expect(str).toEqual(`
-let include = (template, data) => this.render(template, {...it, ...(data ?? {})}, options);
-let includeAsync = (template, data) => this.renderAsync(template, {...it, ...(data ?? {})}, options);
+let include = (__eta_t, __eta_d) => this.render(__eta_t, {...it, ...(__eta_d ?? {})}, options);
+let includeAsync = (__eta_t, __eta_d) => this.renderAsync(__eta_t, {...it, ...(__eta_d ?? {})}, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction};
 

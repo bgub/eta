@@ -198,3 +198,57 @@ describe("import values merging", () => {
     expect(res).toEqual("This is a partial.\nHello friend");
   });
 });
+
+describe("import values merging with varName data", () => {
+  const eta = new Eta({ varName: "data", views: path.join(__dirname, "templates") });
+
+  eta.loadTemplate("@simple", "<%= data.greeting ?? 'Hi' %> <%= data.name %>");
+  eta.loadTemplate("@partial", "This is a partial.\n<%~ include('@simple', {name: 'Test Runner'}) %>\n");
+  eta.loadTemplate("@partial-merge", "This is a partial.\n<%~ include('@simple', {greeting: 'Hello'}) %>\n");
+  eta.loadTemplate("@partial-pass-data", "This is a partial.\n<%~ include('@simple') %>");
+
+  it("can override value", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial", { greeting: "Hello", name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello Test Runner");
+  });
+
+  it("merges values", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial-merge", { name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello friend");
+  });
+
+  it("passes original values", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial-pass-data", { greeting: "Hello", name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello friend");
+  });
+});
+
+describe("import values merging with the useWith", () => {
+  const eta = new Eta({ useWith: true, views: path.join(__dirname, "templates") });
+
+  eta.loadTemplate("@simple", "<%= typeof greeting !== 'undefined' ? greeting : 'Hi' %> <%= name %>");
+  eta.loadTemplate("@partial", "This is a partial.\n<%~ include('@simple', {name: 'Test Runner'}) %>\n");
+  eta.loadTemplate("@partial-merge", "This is a partial.\n<%~ include('@simple', {greeting: 'Hello'}) %>\n");
+  eta.loadTemplate("@partial-pass-data", "This is a partial.\n<%~ include('@simple') %>");
+
+  it("can override value", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial", { greeting: "Hello", name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello Test Runner");
+  });
+
+  it("merges values", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial-merge", { name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello friend");
+  });
+
+  it("passes original values", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial-pass-data", { greeting: "Hello", name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello friend");
+  });
+});
