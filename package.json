@@ -32,6 +32,7 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "prepare": "npm run build",
     "dev": "tsdown --watch",
     "lint": "biome check --error-on-warnings",
     "format": "biome format --write",
