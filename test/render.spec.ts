@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { Eta } from "../src/index";
 
 interface SimpleEtaTemplate {
+  greeting?: string;
   name: string;
 }
 
@@ -169,5 +170,31 @@ describe("file rendering", () => {
 
 
 HI FROM ASYNC`);
+  });
+});
+
+describe("import values merging", () => {
+  const eta = new Eta({ views: path.join(__dirname, "templates") });
+  eta.loadTemplate("@simple", "<%= it.greeting ?? 'Hi' %> <%= it.name %>");
+  eta.loadTemplate("@partial", "This is a partial.\n<%~ include('@simple', {name: 'Test Runner'}) %>\n");
+  eta.loadTemplate("@partial-merge", "This is a partial.\n<%~ include('@simple', {greeting: 'Hello'}) %>\n");
+  eta.loadTemplate("@partial-pass-data", "This is a partial.\n<%~ include('@simple') %>");
+
+  it("can override value", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial", { greeting: "Hello", name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello Test Runner");
+  });
+
+  it("merges values", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial-merge", { name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello friend");
+  });
+
+  it("passes original values", () => {
+    const res = eta.render<SimpleEtaTemplate>("@partial-pass-data", { greeting: "Hello", name: "friend" });
+
+    expect(res).toEqual("This is a partial.\nHello friend");
   });
 });

@@ -20,8 +20,8 @@ export function compileToString(
 
   // note: when the include function passes through options, the only parameter that matters is the filepath parameter
   let res = `${config.functionHeader}
-let include = (template, data) => this.render(template, data, options);
-let includeAsync = (template, data) => this.renderAsync(template, data, options);
+let include = (template, data) => this.render(template, {...${config.varName}, ...(data ?? {})}, options);
+let includeAsync = (template, data) => this.renderAsync(template, {...${config.varName}, ...(data ?? {})}, options);
 
 let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction${
     config.debug
