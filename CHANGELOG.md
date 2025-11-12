@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.2.0](https://github.com/bgub/eta/compare/v4.1.0...v4.2.0) (2025-11-12)
+
+
+### Features
+
+* add prepare script to allow installation from Git ([#348](https://github.com/bgub/eta/issues/348)) ([d8bacbb](https://github.com/bgub/eta/commit/d8bacbb840369cace6d495ac738b1acebc6cc374))
+
+
+### Bug Fixes
+
+* merge data dictionary when including ([#347](https://github.com/bgub/eta/issues/347)) ([c0cd1db](https://github.com/bgub/eta/commit/c0cd1dbb8e9aede71670268cc188dd385c567384))
+* remove typo from README ([eb948d3](https://github.com/bgub/eta/commit/eb948d300403af6c8cfc67100c7877264f982c1c))
+* use correct path for types exports ([#340](https://github.com/bgub/eta/issues/340)) ([b8d4b30](https://github.com/bgub/eta/commit/b8d4b3076a93b059e074ae3bd57ecbd218481eb3))
+
 ## [4.1.0](https://github.com/bgub/eta/compare/v4.0.1...v4.1.0) (2025-11-12)
 
 
