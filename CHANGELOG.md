@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.0](https://github.com/bgub/eta/compare/v4.0.1...v4.1.0) (2025-11-12)
+
+
+### Features
+
+* add outputFunctionName config property ([ed33823](https://github.com/bgub/eta/commit/ed33823d4253c483a07c9149b2e42c2a10da39c8))
+* Add outputFunctionName config property ([#331](https://github.com/bgub/eta/issues/331)) ([ed33823](https://github.com/bgub/eta/commit/ed33823d4253c483a07c9149b2e42c2a10da39c8))
+
 ## [4.0.1](https://github.com/bgub/eta/compare/eta-v4.0.0...eta-v4.0.1) (2025-09-17)
 
 
