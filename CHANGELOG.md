@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.1](https://github.com/bgub/eta/compare/v4.4.0...v4.4.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* revert "eta/core" to ESM build ([37cc1ab](https://github.com/bgub/eta/commit/37cc1ab70499608f433edccdd02b0f072756e88a))
+
 ## [4.4.0](https://github.com/bgub/eta/compare/v4.3.1...v4.4.0) (2025-11-13)
 
 
