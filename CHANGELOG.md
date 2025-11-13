@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.0](https://github.com/bgub/eta/compare/v4.3.1...v4.4.0) (2025-11-13)
+
+
+### Features
+
+* add ts-base to README, update rmWhitespace explanation ([d6db743](https://github.com/bgub/eta/commit/d6db743ff53887dcfccdd2d9b776f521820fe51a))
+
 ## [4.3.1](https://github.com/bgub/eta/compare/v4.3.0...v4.3.1) (2025-11-13)
 
 
