@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.1](https://github.com/bgub/eta/compare/v4.3.0...v4.3.1) (2025-11-13)
+
+
+### Bug Fixes
+
+* exports are .mjs not .js ([f870aaf](https://github.com/bgub/eta/commit/f870aaf85984118d840a2910860b5d0aaad086b0))
+
 ## [4.3.0](https://github.com/bgub/eta/compare/v4.2.0...v4.3.0) (2025-11-13)
 
 
