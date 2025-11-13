@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.0](https://github.com/bgub/eta/compare/v4.2.0...v4.3.0) (2025-11-13)
+
+
+### Features
+
+* add error.cause to RuntimeErr ([#306](https://github.com/bgub/eta/issues/306)) ([61b8715](https://github.com/bgub/eta/commit/61b87155311d25dfe3326c24407c27f494d275a4))
+
+
+### Bug Fixes
+
+* generate a CJS build, update build and type exports ([65cafd0](https://github.com/bgub/eta/commit/65cafd0ca48a144c9bb3db8b0609e02f5e7a9354))
+
 ## [4.2.0](https://github.com/bgub/eta/compare/v4.1.0...v4.2.0) (2025-11-12)
 
 
