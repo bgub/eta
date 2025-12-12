@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.0](https://github.com/bgub/eta/compare/v4.4.1...v4.5.0) (2025-12-12)
+
+
+### Features
+
+* add require field for core module in package.json ([#357](https://github.com/bgub/eta/issues/357)) ([29f52f8](https://github.com/bgub/eta/commit/29f52f8d06461b5cb57e5428be0c224b3286eada))
+
 ## [4.4.1](https://github.com/bgub/eta/compare/v4.4.0...v4.4.1) (2025-11-13)
 
 
