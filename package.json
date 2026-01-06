@@ -16,6 +16,7 @@
   "type": "module",
   "exports": {
     ".": {
+      "react-native": "./dist/core.js",
       "types": {
         "import": "./dist/index.d.mts",
         "require": "./dist/index.d.cts"
@@ -24,12 +25,14 @@
       "require": "./dist/index.cjs"
     },
     "./core": {
+      "react-native": "./dist/core.js",
+      "types": "./dist/core.d.ts",
       "require": "./dist/core.js",
-      "import": "./dist/core.js",
-      "types": "./dist/core.d.ts"
+      "import": "./dist/core.js"
     },
     "./package.json": "./package.json"
   },
+  "react-native": "./dist/core.js",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",

@@ -27,7 +27,7 @@
 
 ## Summary
 
-Eta is a lightweight and blazing fast embedded JS templating engine that works inside Node, Deno, and the browser. It's written in TypeScript and emphasizes great performance, configurability, and small bundle size.
+Eta is a lightweight and blazing fast embedded JS templating engine that works inside Node, Deno, React Native, and the browser. It's written in TypeScript and emphasizes great performance, configurability, and small bundle size.
 
 > 🎯 **Built with [ts-base](https://github.com/bgub/ts-base)** — A TypeScript library starter template featuring Biome, Vitest, tsdown, and automated releases. Check out ts-base for a modern TypeScript project setup!
 
@@ -36,7 +36,7 @@ Eta is a lightweight and blazing fast embedded JS templating engine that works i
 - 📦 0 dependencies
 - 💡 Only ~3.5 KB minzipped
 - ⚡️ Written in TypeScript
-- ✨ Deno support (+ Node and browser)
+- ✨ Deno support (+ Node, React Native, and browser)
 - 🚀 Super Fast
 - 🔧 Configurable
   - Plugins, custom delimiters, caching
@@ -79,6 +79,45 @@ const eta = new Eta({ views: path.join(__dirname, "templates") });
 const res = eta.render("./simple", { name: "Ben" });
 console.log(res); // Hi Ben!
 ```
+
+## React Native
+
+Eta works out of the box with React Native! The library automatically uses a browser-compatible core build when bundled with Metro.
+
+### Basic Usage
+
+```tsx
+import { Eta } from "eta";
+
+const eta = new Eta();
+
+// Load templates as strings (e.g., from bundled assets or API)
+eta.loadTemplate("greeting", "Hello <%= it.name %>!");
+
+// Render using the template name prefixed with @
+const result = eta.render("@greeting", { name: "World" });
+console.log(result); // "Hello World!"
+```
+
+### Inline Template Rendering
+
+For simple use cases, you can render template strings directly:
+
+```tsx
+import { Eta } from "eta";
+
+const eta = new Eta();
+
+const result = eta.renderString("Hello <%= it.name %>!", { name: "React Native" });
+console.log(result); // "Hello React Native!"
+```
+
+### Requirements
+
+- React Native 0.72+ (Metro bundler with `exports` support)
+- For earlier versions, import from `eta/core` directly
+
+> **Note:** Since React Native doesn't have filesystem access, use `loadTemplate()` to register template strings (from bundled assets, AsyncStorage, or network requests) and render them by name prefixed with `@`.
 
 ## FAQs
 
