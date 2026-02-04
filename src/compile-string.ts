@@ -93,7 +93,7 @@ export function compileBody(this: Eta, buff: Array<AstObject>): string {
       const str = currentBlock;
 
       // we know string exists
-      returnStr += "__eta.res+='" + str + "'\n";
+      returnStr += "__eta.res+='" + str + "';\n";
     } else {
       const type = currentBlock.t; // "r", "e", or "i"
       let content = currentBlock.val || "";
@@ -107,7 +107,7 @@ export function compileBody(this: Eta, buff: Array<AstObject>): string {
           content = "__eta.f(" + content + ")";
         }
 
-        returnStr += "__eta.res+=" + content + "\n";
+        returnStr += "__eta.res+=" + content + ";\n";
       } else if (type === "i") {
         // interpolate
 
@@ -119,7 +119,7 @@ export function compileBody(this: Eta, buff: Array<AstObject>): string {
           content = "__eta.e(" + content + ")";
         }
 
-        returnStr += "__eta.res+=" + content + "\n";
+        returnStr += "__eta.res+=" + content + ";\n";
       } else if (type === "e") {
         // execute
         returnStr += content + "\n";

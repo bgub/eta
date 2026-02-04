@@ -312,3 +312,54 @@ describe("import values merging with the useWith", () => {
     expect(res).toEqual("This is a partial.\nHello friend");
   });
 });
+
+describe("forEach loops in included templates", () => {
+  const eta = new Eta();
+
+  it("renders forEach loop inside included partial", () => {
+    eta.loadTemplate(
+      "@loop-partial",
+      `<ul>
+<% (it.items || []).forEach(item => { %>
+<li><%= item %></li>
+<% }) %>
+</ul>`,
+    );
+
+    eta.loadTemplate(
+      "@loop-main",
+      `<%~ include('@loop-partial', {items: ['a', 'b', 'c']}) %>`,
+    );
+
+    const result = eta.render("@loop-main", {});
+
+    expect(result).toContain("<li>a</li>");
+    expect(result).toContain("<li>b</li>");
+    expect(result).toContain("<li>c</li>");
+  });
+
+  it("renders includes called from within a forEach loop", () => {
+    eta.loadTemplate(
+      "@nested-partial",
+      `<div>
+<% (it.question.items || []).forEach(opt => { %>
+<span><%= opt %></span>
+<% }) %>
+</div>`,
+    );
+
+    eta.loadTemplate(
+      "@nested-main",
+      `<% [{items: ['a', 'b']}, {items: ['c', 'd']}].forEach(q => { %>
+<%~ include('@nested-partial', {question: q}) %>
+<% }) %>`,
+    );
+
+    const result = eta.render("@nested-main", {});
+
+    expect(result).toContain("<span>a</span>");
+    expect(result).toContain("<span>b</span>");
+    expect(result).toContain("<span>c</span>");
+    expect(result).toContain("<span>d</span>");
+  });
+});
