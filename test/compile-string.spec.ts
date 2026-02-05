@@ -26,8 +26,8 @@ function layout(path, data) {
 
 function output(s){__eta.res+=s;}
 
-__eta.res+='hi '
-__eta.res+=__eta.e(it.name)
+__eta.res+='hi ';
+__eta.res+=__eta.e(it.name);
 
 if (__eta.layout) {
   __eta.res = include (__eta.layout, {...it, body: __eta.res, ...__eta.layoutData});
@@ -52,8 +52,8 @@ function layout(path, data) {
 
 function output(s){__eta.res+=s;}
 
-__eta.res+='hi '
-__eta.res+=it.name
+__eta.res+='hi ';
+__eta.res+=it.name;
 
 if (__eta.layout) {
   __eta.res = include (__eta.layout, {...it, body: __eta.res, ...__eta.layoutData});
@@ -80,9 +80,9 @@ function layout(path, data) {
 
 function output(s){__eta.res+=s;}
 
-__eta.res+='hi'
-__eta.res+=__eta.e(it.firstname)
-__eta.res+=__eta.e(it.lastname)
+__eta.res+='hi';
+__eta.res+=__eta.e(it.firstname);
+__eta.res+=__eta.e(it.lastname);
 
 if (__eta.layout) {
   __eta.res = include (__eta.layout, {...it, body: __eta.res, ...__eta.layoutData});
@@ -107,29 +107,29 @@ function layout(path, data) {
 
 function output(s){__eta.res+=s;}
 
-__eta.res+='Hi\\n'
+__eta.res+='Hi\\n';
 console.log("Hope you like Eta!")
-__eta.res+=__eta.e(it.htmlstuff)
-__eta.res+='\\n'
+__eta.res+=__eta.e(it.htmlstuff);
+__eta.res+='\\n';
 for (var key in it.obj) {
-__eta.res+='Value: '
-__eta.res+=__eta.e(it.obj[key])
-__eta.res+=', Key: '
-__eta.res+=__eta.e(key)
-__eta.res+='\\n'
+__eta.res+='Value: ';
+__eta.res+=__eta.e(it.obj[key]);
+__eta.res+=', Key: ';
+__eta.res+=__eta.e(key);
+__eta.res+='\\n';
 if (key === 'thirdchild') {
-__eta.res+='  '
+__eta.res+='  ';
 for (var i = 0, arr = it.obj[key]; i < arr.length; i++) {
-__eta.res+='      Salutations! Index: '
-__eta.res+=__eta.e(i)
-__eta.res+=', parent key: '
-__eta.res+=__eta.e(key)
-__eta.res+='      \\n  '
+__eta.res+='      Salutations! Index: ';
+__eta.res+=__eta.e(i);
+__eta.res+=', parent key: ';
+__eta.res+=__eta.e(key);
+__eta.res+='      \\n  ';
 }
 }
 }
-__eta.res+='\\nThis is a partial: '
-__eta.res+=include("mypartial")
+__eta.res+='\\nThis is a partial: ';
+__eta.res+=include("mypartial");
 
 if (__eta.layout) {
   __eta.res = include (__eta.layout, {...it, body: __eta.res, ...__eta.layoutData});
