@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.5.1](https://github.com/bgub/eta/compare/v4.5.0...v4.5.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* add semicolons to compiled output to prevent ASI issues with forEach ([e0f1d65](https://github.com/bgub/eta/commit/e0f1d653f1c563b14b3592abef6378e3210dd90d))
+* add semicolons to compiled template statements for consistency ([#362](https://github.com/bgub/eta/issues/362)) ([e0f1d65](https://github.com/bgub/eta/commit/e0f1d653f1c563b14b3592abef6378e3210dd90d))
+
 ## [4.5.0](https://github.com/bgub/eta/compare/v4.4.1...v4.5.0) (2025-12-12)
 
 
