@@ -99,7 +99,7 @@ export function compileBody(this: Eta, buff: Array<AstObject>): string {
       // we know string exists
       returnStr += "__eta.res+='" + str + "';\n";
     } else {
-      const type = currentBlock.t; // "r", "e", or "i"
+      const type = currentBlock.t; // "r", "e", "i" or custom tag name
       let content = currentBlock.val || "";
 
       if (config.debug) returnStr += "__eta.line=" + currentBlock.lineNo + "\n";
@@ -127,6 +127,10 @@ export function compileBody(this: Eta, buff: Array<AstObject>): string {
       } else if (type === "e") {
         // execute
         returnStr += content + "\n";
+
+      } else if (type in config.customTags) {
+        const customTag = config.customTags[type];
+        returnStr += `__eta.res += this.config.customTags['${type}']('${content}', ${config.varName});\n`;
       }
     }
   }
