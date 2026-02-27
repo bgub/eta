@@ -27,6 +27,9 @@ export interface EtaConfig {
   /** Holds cache of resolved filepaths. Set to `false` to disable. */
   cacheFilepaths: boolean;
 
+  /** Object specifying custom tags. Keys are tag prefixes, values are functions which take tag content and return a string. */
+  customTags: Record<string, (content: string, data: unknown) => string>;
+
   /** Whether to pretty-format error messages (introduces runtime penalties) */
   debug: boolean;
 
@@ -89,6 +92,7 @@ const defaultConfig: EtaConfig = {
   autoTrim: [false, "nl"],
   cache: false,
   cacheFilepaths: true,
+  customTags: {},
   debug: false,
   escapeFunction: XMLEscape,
   // default filter function (not used unless enables) just stringifies the input

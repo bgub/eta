@@ -2,10 +2,8 @@ import { ParseErr } from "./err.ts";
 import type { Eta } from "./internal.ts";
 import { trimWS } from "./utils.ts";
 
-export type TagType = "r" | "e" | "i" | "";
-
 export interface TemplateObject {
-  t: TagType;
+  t: string;
   val: string;
   lineNo?: number;
 }
@@ -39,6 +37,8 @@ export function parse(this: Eta, str: string): Array<AstObject> {
   let trimLeftOfNextStr: string | false = false;
   let lastIndex = 0;
   const parseOptions = config.parse;
+
+  const customTagPrefixes = Object.keys(config.customTags)
 
   if (config.plugins) {
     for (let i = 0; i < config.plugins.length; i++) {
@@ -90,6 +90,7 @@ export function parse(this: Eta, str: string): Array<AstObject> {
     parseOptions.exec,
     parseOptions.interpolate,
     parseOptions.raw,
+    ...customTagPrefixes,
   ].reduce((accumulator, prefix) => {
     if (accumulator && prefix) {
       return accumulator + "|" + escapeRegExp(prefix);
@@ -138,14 +139,12 @@ export function parse(this: Eta, str: string): Array<AstObject> {
 
         trimLeftOfNextStr = closeTag[2];
 
-        const currentType: TagType =
-          prefix === parseOptions.exec
-            ? "e"
-            : prefix === parseOptions.raw
-              ? "r"
-              : prefix === parseOptions.interpolate
-                ? "i"
-                : "";
+        let currentType = "";
+        if(prefix === config.parse.exec) currentType = "e";
+        else if(prefix === config.parse.interpolate) currentType = "i";
+        else if(prefix === config.parse.raw) currentType = "r";
+        // custom tags
+        else if(customTagPrefixes.includes(prefix)) currentType = prefix;
 
         currentObj = { t: currentType, val: content };
         break;
