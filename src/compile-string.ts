@@ -39,6 +39,8 @@ function layout(path, data) {
   }
 
 function ${config.outputFunctionName}(s){__eta.res+=s;}
+function capture(fn){const s=__eta.res;__eta.res='';try{fn();return __eta.res}finally{__eta.res=s;}}
+async function captureAsync(fn){const s=__eta.res;__eta.res='';try{await fn();return __eta.res}finally{__eta.res=s;}}
 
 ${compileBody.call(this, buffer)}
 if (__eta.layout) {

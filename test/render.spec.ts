@@ -363,3 +363,137 @@ describe("forEach loops in included templates", () => {
     expect(result).toContain("<span>d</span>");
   });
 });
+
+describe("capture", () => {
+  const eta = new Eta();
+
+  it("captures inline HTML and passes it to an included template", () => {
+    eta.loadTemplate(
+      "@wrapper",
+      `<div id="wrapper"><%~ it.content %></div>`,
+    );
+
+    const res = eta.renderString(
+      `<%~ include("@wrapper", {content: capture(() => { %><h1>Hello</h1><% })}) %>`,
+      {},
+    );
+
+    expect(res).toEqual('<div id="wrapper"><h1>Hello</h1></div>');
+  });
+
+  it("captures content that uses data from the outer scope", () => {
+    eta.loadTemplate("@card", `<div class="card"><%~ it.body %></div>`);
+
+    const res = eta.renderString(
+      `<%~ include("@card", {body: capture(() => { %><p><%= it.name %></p><% })}) %>`,
+      { name: "Ada" },
+    );
+
+    expect(res).toEqual('<div class="card"><p>Ada</p></div>');
+  });
+
+  it("does not pollute the outer template's output", () => {
+    eta.loadTemplate("@slot", `[<%~ it.slot %>]`);
+
+    const res = eta.renderString(
+      `before|<%~ include("@slot", {slot: capture(() => { %>inner<% })}) %>|after`,
+      {},
+    );
+
+    expect(res).toEqual("before|[inner]|after");
+  });
+
+  it("works with nested captures", () => {
+    eta.loadTemplate("@outer", `<outer><%~ it.content %></outer>`);
+    eta.loadTemplate("@inner", `<inner><%~ it.content %></inner>`);
+
+    const res = eta.renderString(
+      `<%~ include("@outer", {content: capture(() => { %><%~ include("@inner", {content: capture(() => { %>deep<% })}) %><% })}) %>`,
+      {},
+    );
+
+    expect(res).toEqual("<outer><inner>deep</inner></outer>");
+  });
+
+  it("works with loops inside capture", () => {
+    eta.loadTemplate("@list", `<ul><%~ it.items %></ul>`);
+
+    const res = eta.renderString(
+      `<%~ include("@list", {items: capture(() => { %><% ['a','b','c'].forEach(x => { %><li><%= x %></li><% }) %><% })}) %>`,
+      {},
+    );
+
+    expect(res).toEqual("<ul><li>a</li><li>b</li><li>c</li></ul>");
+  });
+
+  it("works with async rendering", async () => {
+    eta.loadTemplate(
+      "@async-wrapper",
+      `<div><%~ it.content %></div>`,
+    );
+
+    const res = await eta.renderStringAsync(
+      `<%~ include("@async-wrapper", {content: capture(() => { %><p>async content</p><% })}) %>`,
+      {},
+    );
+
+    expect(res).toEqual("<div><p>async content</p></div>");
+  });
+
+  it("capture returns a string that can be stored in a variable", () => {
+    const res = eta.renderString(
+      `<% const heading = capture(() => { %><h1>Title</h1><% }) %>The heading is: <%~ heading %>`,
+      {},
+    );
+
+    expect(res).toEqual("The heading is: <h1>Title</h1>");
+  });
+
+  it("restores output buffer when capture callback throws", () => {
+    expect(() => {
+      eta.renderString(
+        `before<% capture(() => { throw new Error("fail") }) %>after`,
+        {},
+      );
+    }).toThrow("fail");
+
+    // Verify the Eta instance still works correctly after the error
+    const res = eta.renderString("still works: <%= it.x %>", { x: "yes" });
+    expect(res).toEqual("still works: yes");
+  });
+
+  it("captureAsync works with async content", async () => {
+    eta.loadTemplate(
+      "@async-slot",
+      `<section><%~ it.content %></section>`,
+    );
+
+    const res = await eta.renderStringAsync(
+      `<%~ include("@async-slot", {content: await captureAsync(async () => { %><p><%= await it.getData() %></p><% })}) %>`,
+      { getData: () => Promise.resolve("async value") },
+    );
+
+    expect(res).toEqual("<section><p>async value</p></section>");
+  });
+
+  it("captureAsync does not pollute outer output", async () => {
+    const res = await eta.renderStringAsync(
+      `A|<% const x = await captureAsync(async () => { %><%= await it.val() %><% }) %>B|<%~ x %>`,
+      { val: () => Promise.resolve("captured") },
+    );
+
+    expect(res).toEqual("A|B|captured");
+  });
+
+  it("captureAsync restores buffer on async error", async () => {
+    await expect(async () => {
+      await eta.renderStringAsync(
+        `before<% await captureAsync(async () => { throw new Error("async fail") }) %>`,
+        {},
+      );
+    }).rejects.toThrow("async fail");
+
+    const res = eta.renderString("still works", {});
+    expect(res).toEqual("still works");
+  });
+});
