@@ -396,15 +396,9 @@ describe("block", () => {
   });
 
   it("empty block with no default and no override", () => {
-    eta.loadTemplate(
-      "@block-empty",
-      `[<%~ block('sidebar') %>]<%~ it.body %>`,
-    );
+    eta.loadTemplate("@block-empty", `[<%~ block('sidebar') %>]<%~ it.body %>`);
 
-    const res = eta.renderString(
-      `<% layout("@block-empty") %>main`,
-      {},
-    );
+    const res = eta.renderString(`<% layout("@block-empty") %>main`, {});
 
     expect(res).toEqual("[]main");
   });
@@ -424,10 +418,7 @@ describe("block", () => {
   });
 
   it("block accessing outer scope data", () => {
-    eta.loadTemplate(
-      "@block-data",
-      `<%~ block('title') %>|<%~ it.body %>`,
-    );
+    eta.loadTemplate("@block-data", `<%~ block('title') %>|<%~ it.body %>`);
 
     const res = eta.renderString(
       `<% layout("@block-data") %>body<% block('title', () => { %><%= it.name %><% }) %>`,
@@ -471,10 +462,7 @@ describe("capture", () => {
   const eta = new Eta();
 
   it("captures inline HTML and passes it to an included template", () => {
-    eta.loadTemplate(
-      "@wrapper",
-      `<div id="wrapper"><%~ it.content %></div>`,
-    );
+    eta.loadTemplate("@wrapper", `<div id="wrapper"><%~ it.content %></div>`);
 
     const res = eta.renderString(
       `<%~ include("@wrapper", {content: capture(() => { %><h1>Hello</h1><% })}) %>`,
@@ -530,10 +518,7 @@ describe("capture", () => {
   });
 
   it("works with async rendering", async () => {
-    eta.loadTemplate(
-      "@async-wrapper",
-      `<div><%~ it.content %></div>`,
-    );
+    eta.loadTemplate("@async-wrapper", `<div><%~ it.content %></div>`);
 
     const res = await eta.renderStringAsync(
       `<%~ include("@async-wrapper", {content: capture(() => { %><p>async content</p><% })}) %>`,
@@ -566,10 +551,7 @@ describe("capture", () => {
   });
 
   it("captureAsync works with async content", async () => {
-    eta.loadTemplate(
-      "@async-slot",
-      `<section><%~ it.content %></section>`,
-    );
+    eta.loadTemplate("@async-slot", `<section><%~ it.content %></section>`);
 
     const res = await eta.renderStringAsync(
       `<%~ include("@async-slot", {content: await captureAsync(async () => { %><p><%= await it.getData() %></p><% })}) %>`,
