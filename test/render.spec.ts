@@ -364,6 +364,109 @@ describe("forEach loops in included templates", () => {
   });
 });
 
+describe("block", () => {
+  const eta = new Eta();
+
+  it("child overrides layout default", () => {
+    eta.loadTemplate(
+      "@block-layout",
+      `<head><%~ block('styles', () => { %><link href="default.css"><% }) %></head><%~ it.body %>`,
+    );
+
+    const res = eta.renderString(
+      `<% layout("@block-layout") %><p>Body</p><% block('styles', () => { %><link href="page.css"><% }) %>`,
+      {},
+    );
+
+    expect(res).toEqual('<head><link href="page.css"></head><p>Body</p>');
+  });
+
+  it("block with default content when no override", () => {
+    eta.loadTemplate(
+      "@block-default",
+      `<head><%~ block('styles', () => { %><link href="default.css"><% }) %></head><%~ it.body %>`,
+    );
+
+    const res = eta.renderString(
+      `<% layout("@block-default") %><p>Body</p>`,
+      {},
+    );
+
+    expect(res).toEqual('<head><link href="default.css"></head><p>Body</p>');
+  });
+
+  it("empty block with no default and no override", () => {
+    eta.loadTemplate(
+      "@block-empty",
+      `[<%~ block('sidebar') %>]<%~ it.body %>`,
+    );
+
+    const res = eta.renderString(
+      `<% layout("@block-empty") %>main`,
+      {},
+    );
+
+    expect(res).toEqual("[]main");
+  });
+
+  it("multiple blocks in one layout", () => {
+    eta.loadTemplate(
+      "@block-multi",
+      `<head><%~ block('styles') %></head><footer><%~ block('scripts') %></footer><%~ it.body %>`,
+    );
+
+    const res = eta.renderString(
+      `<% layout("@block-multi") %>body<% block('styles', () => { %>S<% }) %><% block('scripts', () => { %>J<% }) %>`,
+      {},
+    );
+
+    expect(res).toEqual("<head>S</head><footer>J</footer>body");
+  });
+
+  it("block accessing outer scope data", () => {
+    eta.loadTemplate(
+      "@block-data",
+      `<%~ block('title') %>|<%~ it.body %>`,
+    );
+
+    const res = eta.renderString(
+      `<% layout("@block-data") %>body<% block('title', () => { %><%= it.name %><% }) %>`,
+      { name: "Ada" },
+    );
+
+    expect(res).toEqual("Ada|body");
+  });
+
+  it("block doesn't leak into it.body", () => {
+    eta.loadTemplate(
+      "@block-noleak",
+      `[<%~ block('extra') %>][<%~ it.body %>]`,
+    );
+
+    const res = eta.renderString(
+      `<% layout("@block-noleak") %>body<% block('extra', () => { %>X<% }) %>`,
+      {},
+    );
+
+    expect(res).toEqual("[X][body]");
+  });
+
+  it("blockAsync with async content", async () => {
+    eta.loadTemplate(
+      "@block-async-layout",
+      `<%~ await blockAsync('content') %>|<%~ it.body %>`,
+      { async: true },
+    );
+
+    const res = await eta.renderStringAsync(
+      `<% layout("@block-async-layout") %>body<% await blockAsync('content', async () => { %><%= await it.getData() %><% }) %>`,
+      { getData: () => Promise.resolve("async-val") },
+    );
+
+    expect(res).toEqual("async-val|body");
+  });
+});
+
 describe("capture", () => {
   const eta = new Eta();
 
