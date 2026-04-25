@@ -38,7 +38,7 @@ export function parse(this: Eta, str: string): Array<AstObject> {
   let lastIndex = 0;
   const parseOptions = config.parse;
 
-  const customTagPrefixes = Object.keys(config.customTags)
+  const customTagPrefixes = Object.keys(config.customTags);
 
   if (config.plugins) {
     for (let i = 0; i < config.plugins.length; i++) {
@@ -139,12 +139,16 @@ export function parse(this: Eta, str: string): Array<AstObject> {
 
         trimLeftOfNextStr = closeTag[2];
 
-        let currentType = "";
-        if(prefix === config.parse.exec) currentType = "e";
-        else if(prefix === config.parse.interpolate) currentType = "i";
-        else if(prefix === config.parse.raw) currentType = "r";
-        // custom tags
-        else if(customTagPrefixes.includes(prefix)) currentType = prefix;
+        const currentType: string =
+          prefix === parseOptions.exec
+            ? "e"
+            : prefix === parseOptions.raw
+              ? "r"
+              : prefix === parseOptions.interpolate
+                ? "i"
+                : customTagPrefixes.includes(prefix)
+                  ? prefix
+                  : "";
 
         currentObj = { t: currentType, val: content };
         break;

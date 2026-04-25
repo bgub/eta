@@ -458,6 +458,60 @@ describe("block", () => {
   });
 });
 
+describe("customTags", () => {
+  it("basic custom tag renders output", () => {
+    const eta = new Eta({
+      customTags: {
+        "*": (content, data) =>
+          (data as Record<string, string>)[content.trim()],
+      },
+    });
+
+    const res = eta.renderString("Hello <%* name %>!", { name: "World" });
+    expect(res).toEqual("Hello World!");
+  });
+
+  it("comment tag that outputs nothing", () => {
+    const eta = new Eta({
+      customTags: { "#": () => "" },
+    });
+
+    const res = eta.renderString("A<%# this is a comment %>B", {});
+    expect(res).toEqual("AB");
+  });
+
+  it("multiple custom tags in one template", () => {
+    const translations: Record<string, Record<string, string>> = {
+      en: { greeting: "Hello" },
+    };
+
+    const eta = new Eta({
+      customTags: {
+        "#": () => "",
+        "*": (key, data) =>
+          translations[(data as { lang: string }).lang][key.trim()],
+      },
+    });
+
+    const res = eta.renderString("<%# comment %><p><%* greeting %></p>", {
+      lang: "en",
+    });
+    expect(res).toEqual("<p>Hello</p>");
+  });
+
+  it("works alongside built-in tags", () => {
+    const eta = new Eta({
+      customTags: { "*": (content) => content.trim().toUpperCase() },
+    });
+
+    const res = eta.renderString("<%= it.a %>|<%* hello %>|<%~ it.b %>", {
+      a: "A",
+      b: "<B>",
+    });
+    expect(res).toEqual("A|HELLO|<B>");
+  });
+});
+
 describe("capture", () => {
   const eta = new Eta();
 
