@@ -499,6 +499,15 @@ describe("customTags", () => {
     expect(res).toEqual("<p>Hello</p>");
   });
 
+  it("throws on conflicting custom tag prefix", () => {
+    expect(() => new Eta({ customTags: { "=": () => "" } })).toThrow(
+      /conflicts with a built-in prefix/,
+    );
+    expect(() => new Eta({ customTags: { "-": () => "" } })).toThrow(
+      /conflicts with a built-in prefix/,
+    );
+  });
+
   it("works alongside built-in tags", () => {
     const eta = new Eta({
       customTags: { "*": (content) => content.trim().toUpperCase() },
