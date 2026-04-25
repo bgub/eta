@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.6.0](https://github.com/bgub/eta/compare/v4.5.1...v4.6.0) (2026-04-25)
+
+
+### Features
+
+* add block and blockAsync template helpers ([#367](https://github.com/bgub/eta/issues/367)) ([083954b](https://github.com/bgub/eta/commit/083954b19c93b5d613a65865956fb690f5126517))
+* add capture and captureAsync template helpers ([#365](https://github.com/bgub/eta/issues/365)) ([2350544](https://github.com/bgub/eta/commit/2350544c30cfbad5d0bb1976426e660de8d31a63))
+* add support for custom tag types ([5105744](https://github.com/bgub/eta/commit/51057447c415b546153c96992f6218a830beb128))
+
 ## [4.5.1](https://github.com/bgub/eta/compare/v4.5.0...v4.5.1) (2026-02-05)
 
 
