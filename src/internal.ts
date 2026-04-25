@@ -20,6 +20,22 @@ export class Eta {
     } else {
       this.config = { ...defaultConfig };
     }
+
+    const reserved = [
+      this.config.parse.exec,
+      this.config.parse.interpolate,
+      this.config.parse.raw,
+      "-",
+      "_",
+    ];
+
+    for (const prefix of Object.keys(this.config.customTags)) {
+      if (reserved.includes(prefix)) {
+        throw new EtaError(
+          `Custom tag prefix "${prefix}" conflicts with a built-in prefix`,
+        );
+      }
+    }
   }
 
   config: EtaConfig;

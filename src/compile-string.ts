@@ -127,7 +127,7 @@ export function compileBody(this: Eta, buff: Array<AstObject>): string {
       } else if (type === "e") {
         // execute
         returnStr += content + "\n";
-      } else if (type in config.customTags) {
+      } else if (Object.hasOwn(config.customTags, type)) {
         returnStr += `__eta.res+=this.config.customTags[${JSON.stringify(type)}](${JSON.stringify(content)},${config.varName});\n`;
       }
     }
