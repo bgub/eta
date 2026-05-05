@@ -109,7 +109,7 @@ export function parse(this: Eta, str: string): Array<AstObject> {
   );
 
   const parseCloseReg = new RegExp(
-    "'|\"|`|\\/\\*|(\\s*(-|_)?" + escapeRegExp(config.tags[1]) + ")",
+    "'|\"|`|\\/\\/|\\/\\*|(\\s*(-|_)?" + escapeRegExp(config.tags[1]) + ")",
     "g",
   );
 
@@ -154,7 +154,16 @@ export function parse(this: Eta, str: string): Array<AstObject> {
         break;
       } else {
         const char = closeTag[0];
-        if (char === "/*") {
+        if (char === "//") {
+          const lineEndInd = str.indexOf("\n", parseCloseReg.lastIndex);
+
+          if (lineEndInd === -1) {
+            // comment extends to end of string
+            parseCloseReg.lastIndex = str.length;
+          } else {
+            parseCloseReg.lastIndex = lineEndInd + 1;
+          }
+        } else if (char === "/*") {
           const commentCloseInd = str.indexOf("*/", parseCloseReg.lastIndex);
 
           if (commentCloseInd === -1) {
