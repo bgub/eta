@@ -19,6 +19,8 @@ const singleQuoteReg = /'(?:\\[\s\w"'\\`]|[^\n\r'\\])*?'/g;
 
 const doubleQuoteReg = /"(?:\\[\s\w"'\\`]|[^\n\r"\\])*?"/g;
 
+const lineTerminatorReg = /(?:\r\n|[\n\r\u2028\u2029])/g;
+
 /** Escape special regular expression characters inside a string */
 
 function escapeRegExp(string: string) {
@@ -109,7 +111,9 @@ export function parse(this: Eta, str: string): Array<AstObject> {
   );
 
   const parseCloseReg = new RegExp(
-    "'|\"|`|\\/\\*|(\\s*(-|_)?" + escapeRegExp(config.tags[1]) + ")",
+    "'|\"|`|\\/\\*|(\\s*(-|_)?" +
+      escapeRegExp(config.tags[1]) +
+      ")|\\/\\/",
     "g",
   );
 
@@ -161,6 +165,14 @@ export function parse(this: Eta, str: string): Array<AstObject> {
             ParseErr("unclosed comment", str, closeTag.index);
           }
           parseCloseReg.lastIndex = commentCloseInd;
+        } else if (char === "//") {
+          lineTerminatorReg.lastIndex = parseCloseReg.lastIndex;
+          const match = lineTerminatorReg.exec(str);
+          if (match) {
+            parseCloseReg.lastIndex = match.index + match[0].length;
+          } else {
+            parseCloseReg.lastIndex = str.length;
+          }
         } else if (char === "'") {
           singleQuoteReg.lastIndex = closeTag.index;
 

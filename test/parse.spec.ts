@@ -34,6 +34,22 @@ describe("parse test", () => {
     ]);
   });
 
+  it("works with unpaired apostrophe in single-line comment", () => {
+    const buff = eta.parse("hi <% // comment with unpaired apostrophe' \n %>");
+    expect(buff).toEqual([
+      "hi ",
+      { val: "// comment with unpaired apostrophe' \n", t: "e" },
+    ]);
+  });
+
+  it("works with unpaired apostrophe in multiline comment", () => {
+    const buff = eta.parse("hi <% /* comment with unpaired apostrophe' */ %>");
+    expect(buff).toEqual([
+      "hi ",
+      { val: "/* comment with unpaired apostrophe' */", t: "e" },
+    ]);
+  });
+
   it("parses with simple template literal", () => {
     // biome-ignore lint/suspicious/noTemplateCurlyInString: intentional
     const buff = eta.parse("hi <%= `template %> ${value}` %>");
@@ -113,5 +129,33 @@ describe("parse test", () => {
 
   <%= /* %>
       ^`);
+  });
+
+  it("handles alternative closing tags properly, rather than confusing them with comments", () => {
+    const originalEta = new Eta({ tags: ["{{", "//"] });
+    const buff = originalEta.parse("{{= it.x//");
+    expect(buff).toEqual([{ val: "it.x", t: "i" }]);
+    const originalEta2 = new Eta({ tags: ["{{", "//}}"] });
+    const buff2 = originalEta2.parse("{{= it.x//}}");
+    expect(buff2).toEqual([{ val: "it.x", t: "i" }]);
+  });
+
+  it("handles various line termination characters in single-line comments", () => {
+    const cases = ["\r", "\r\n", "\u2028", "\u2029", "\n"];
+    for (const terminator of cases) {
+      const buff = eta.parse(`hi <% // comment ending with terminator${terminator} %>`);
+      expect(buff).toEqual([
+        "hi ",
+        { val: `// comment ending with terminator${terminator}`, t: "e" },
+      ]);
+    }
+  });
+
+  it("handles a sequence looking like close tag inside single line comment", () => {
+    const buff = eta.parse("hi <% // comment %> with close tag\n %>");
+    expect(buff).toEqual([
+      "hi ",
+      { val: "// comment %> with close tag\n", t: "e" },
+    ]);
   });
 });
