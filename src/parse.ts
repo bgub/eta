@@ -15,9 +15,9 @@ export type AstObject = string | TemplateObject;
 const templateLitReg =
   /`(?:\\[\s\S]|\${(?:[^{}]|{(?:[^{}]|{[^}]*})*})*}|(?!\${)[^\\`])*`/g;
 
-const singleQuoteReg = /'(?:\\[\s\w"'\\`]|[^\n\r'\\])*?'/g;
+const singleQuoteReg = /'(?:\\[\s\S]|[^\n\r'\\])*?'/g;
 
-const doubleQuoteReg = /"(?:\\[\s\w"'\\`]|[^\n\r"\\])*?"/g;
+const doubleQuoteReg = /"(?:\\[\s\S]|[^\n\r"\\])*?"/g;
 
 /** Escape special regular expression characters inside a string */
 
