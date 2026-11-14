@@ -23,7 +23,7 @@ export function compileToString(
 let include = (__eta_t, __eta_d) => this.render(__eta_t, {...${config.varName}, ...(__eta_d ?? {})}, options);
 let includeAsync = (__eta_t, __eta_d) => this.renderAsync(__eta_t, {...${config.varName}, ...(__eta_d ?? {})}, options);
 
-let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction, blocks: {}${
+let __eta = {res: "", e: this.config.escapeFunction, f: this.config.filterFunction, blocks: Object.create(null)${
     config.debug
       ? ', line: 1, templateStr: "' +
         str.replace(/\\|"/g, "\\$&").replace(/\r\n|\n|\r/g, "\\n") +
@@ -41,16 +41,16 @@ function layout(path, data) {
 function ${config.outputFunctionName}(s){__eta.res+=s;}
 function capture(fn){const s=__eta.res;__eta.res='';try{fn();return __eta.res}finally{__eta.res=s;}}
 async function captureAsync(fn){const s=__eta.res;__eta.res='';try{await fn();return __eta.res}finally{__eta.res=s;}}
-function block(name,fn){if(__eta.layout){if(fn){__eta.blocks[name]=capture(fn);}return '';}const b=${config.varName}.__blocks||{};if(name in b){return b[name];}return fn?capture(fn):'';}
-async function blockAsync(name,fn){if(__eta.layout){if(fn){__eta.blocks[name]=await captureAsync(fn);}return '';}const b=${config.varName}.__blocks||{};if(name in b){return b[name];}return fn?await captureAsync(fn):'';}
+function block(name,fn){if(__eta.layout){if(fn){__eta.blocks[name]=capture(fn);}return '';}const b=options?.blocks;if(b&&Object.hasOwn(b,name)){return b[name];}return fn?capture(fn):'';}
+async function blockAsync(name,fn){if(__eta.layout){if(fn){__eta.blocks[name]=await captureAsync(fn);}return '';}const b=options?.blocks;if(b&&Object.hasOwn(b,name)){return b[name];}return fn?await captureAsync(fn):'';}
 
 ${compileBody.call(this, buffer)}
 if (__eta.layout) {
   __eta.res = ${
-    isAsync ? "await includeAsync" : "include"
+    isAsync ? "await this.renderAsync" : "this.render"
   } (__eta.layout, {...${
     config.varName
-  }, body: __eta.res, ...__eta.layoutData, __blocks: __eta.blocks});
+  }, body: __eta.res, ...__eta.layoutData}, {...options, blocks: __eta.blocks});
 }
 ${config.useWith ? "}" : ""}${
   config.debug
