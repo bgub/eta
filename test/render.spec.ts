@@ -367,6 +367,81 @@ describe("forEach loops in included templates", () => {
 describe("block", () => {
   const eta = new Eta();
 
+  it("ignores block overrides supplied through render data", () => {
+    const data = JSON.parse('{"__blocks":{"title":"<script>bad()</script>"}}');
+    expect(
+      eta.renderString(`<%~ block('title', () => { %>default<% }) %>`, data),
+    ).toBe("default");
+    expect(eta.renderString(`<%~ block('title') %>`, data)).toBe("");
+    eta.loadTemplate(
+      "@untrusted-block-partial",
+      `<%~ block('title', () => { %>default<% }) %>`,
+    );
+    expect(
+      eta.renderString(`<%~ include('@untrusted-block-partial') %>`, data),
+    ).toBe("default");
+  });
+
+  it("ignores data overrides in async blocks and partials", async () => {
+    const data = { __blocks: { title: "<script>bad()</script>" } };
+    eta.loadTemplate(
+      "@untrusted-async-block",
+      `<%~ await blockAsync('title', async () => { %>default<% }) %>`,
+      { async: true },
+    );
+    expect(await eta.renderAsync("@untrusted-async-block", data)).toBe(
+      "default",
+    );
+    expect(
+      await eta.renderStringAsync(
+        `<%~ await includeAsync('@untrusted-async-block') %>`,
+        data,
+      ),
+    ).toBe("default");
+  });
+
+  it("preserves captured HTML through layout partials", () => {
+    eta.loadTemplate("@block-slot", `<%~ block('title') %>`);
+    eta.loadTemplate("@block-with-partial", `<%~ include('@block-slot') %>`);
+    expect(
+      eta.renderString(
+        `<% layout('@block-with-partial') %><% block('title', () => { %><b><%= it.name %></b><% }) %>`,
+        { name: "<Ada>", __blocks: { title: "bad" } },
+      ),
+    ).toBe("<b>&lt;Ada&gt;</b>");
+  });
+
+  it("supports prototype-like block names without inherited overrides", () => {
+    eta.loadTemplate(
+      "@block-special",
+      `<%~ block('__proto__') %>|<%~ block('toString', () => { %>fallback<% }) %>`,
+    );
+    expect(
+      eta.renderString(
+        `<% layout('@block-special') %><% block('__proto__', () => { %>safe<% }) %>`,
+        {},
+      ),
+    ).toBe("safe|fallback");
+  });
+
+  it("keeps async layout blocks isolated across concurrent renders", async () => {
+    eta.loadTemplate("@async-block-slot", `<%~ await blockAsync('title') %>`, {
+      async: true,
+    });
+    eta.loadTemplate(
+      "@async-block-parent",
+      `<%~ await includeAsync('@async-block-slot') %>`,
+      { async: true },
+    );
+    const template = `<% layout('@async-block-parent') %><% await blockAsync('title', async () => { %><b><%= await it.value %></b><% }) %>`;
+    const results = await Promise.all([
+      eta.renderStringAsync(template, { value: Promise.resolve("one") }),
+      eta.renderStringAsync(template, { value: Promise.resolve("two") }),
+    ]);
+    expect(results).toEqual(["<b>one</b>", "<b>two</b>"]);
+    expect(await eta.renderAsync("@async-block-parent", {})).toBe("");
+  });
+
   it("child overrides layout default", () => {
     eta.loadTemplate(
       "@block-layout",
