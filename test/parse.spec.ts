@@ -41,6 +41,22 @@ describe("parse test", () => {
     expect(buff).toEqual(["hi ", { val: "`template %> ${value}`", t: "i" }]);
   });
 
+  it("parses strings with any escape sequence", () => {
+    expect(eta.parse("<%= '<\\/script> %>' %>")).toEqual([
+      { val: "'<\\/script> %>'", t: "i" },
+    ]);
+    expect(eta.parse('<%= "\\$ \\. \\- \\[ %>" %>')).toEqual([
+      { val: '"\\$ \\. \\- \\[ %>"', t: "i" },
+    ]);
+  });
+
+  it("renders strings with any escape sequence", () => {
+    expect(eta.renderString("<%= '<\\/script>' %>", {})).toBe(
+      "&lt;/script&gt;",
+    );
+    expect(eta.renderString('<%= "\\$" + it.n %>', { n: 5 })).toBe("$5");
+  });
+
   it("compiles complex template", () => {
     const buff = eta.parse(complexTemplate);
     expect(buff).toEqual([
